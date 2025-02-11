@@ -1,3 +1,4 @@
+// @ts-nocheck
 function exibirNome() {
   let elemento = document.getElementById('nomeInput');
   let nome;
@@ -77,5 +78,74 @@ function ex4() {
     let area = Math.PI * Number(raio.value) ** 2;
 
     p.textContent = `A área do círculo é: ${area.toFixed(2)}`;
+  }
+}
+
+function ternario() {
+  return 1 > 0 ? console.log('Verdadeiro') : console.log('Falso');
+}
+
+function verificaPosNes() {
+  let input = document.getElementById('numero');
+  let result = document.getElementById('result');
+
+  if (
+    input instanceof HTMLInputElement &&
+    result instanceof HTMLParagraphElement
+  ) {
+    let num = parseInt(input.value);
+
+    if (num > 0) {
+      result.textContent = 'Positivo';
+    } else if (num < 0) {
+      result.textContent = 'Negativo';
+    } else {
+      result.textContent = 'Zero';
+    }
+  }
+}
+//document.getElementById('btn').addEventListener('click', verificaPosNes)
+// document.getElementById('btn').addEventListener('click', verificaBissexto)
+document.getElementById('btn').addEventListener('click', palindromo);
+
+function verificaBissexto() {
+  let input = document.getElementById('numero');
+  let result = document.getElementById('result');
+  if (
+    input instanceof HTMLInputElement &&
+    result instanceof HTMLParagraphElement
+  ) {
+    let ano = Number(input.value);
+
+    if (ano % 4 == 0) {
+      result.textContent = 'Ano Bissexto';
+    } else {
+      result.textContent = 'Ano não Bissexto';
+    }
+  }
+}
+
+function palindromo() {
+  let input = document.getElementById('numero');
+  let result = document.getElementById('result');
+  if (
+    input instanceof HTMLInputElement &&
+    result instanceof HTMLParagraphElement
+  ) {
+    let nome = input.value;
+    
+    console.log(nome.split(''));
+    console.log(nome.split('').reverse());
+    console.log(nome.split('').reverse().join(''));
+    
+    const reverso = nome.split('').reverse().join('');
+
+    
+
+    if (nome === reverso) {
+      result.textContent = `A palavra ${nome} é um palíndromo!`;
+    } else {
+      result.textContent = `A palavra ${nome} não é um palíndromo!`;
+    }
   }
 }
