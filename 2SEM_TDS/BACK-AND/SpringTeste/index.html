@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      fetch("http://127.0.0.1:8080/get", {
+        method: "GET", // Usando o método GET
+        // Remover "mode: 'no-cors'" pois não será possível acessar a resposta
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados');
+          }
+          return response.json(); // Convertendo a resposta para JSON
+        })
+        .then((data) => {
+          console.log(data); // Exibe o array no console
+          displayArray(data); // Chama a função para exibir o array na página
+        })
+        .catch((error) => console.error("Erro ao buscar dados:", error));
+
+      // Função para exibir o array na página
+      function displayArray(arr) {
+        const listElement = document.createElement("ul"); // Cria uma lista no HTML
+
+        // Itera sobre os itens do array e cria um item de lista para cada um
+        arr.forEach((item) => {
+          const listItem = document.createElement("li");
+
+          // Verifique se o item é um objeto e exiba suas propriedades
+          if (typeof item === 'object' && item !== null) {
+            listItem.textContent = `ID: ${item.idProduto}, Nome: ${item.nomeProduto}, Preço: ${item.preco}, Quantidade:${item.quantidade}, Ponto de Venda:${item.pontoDeVenda}`;
+          } else {
+            listItem.textContent = item; // Caso o item seja um valor simples (string, número, etc.)
+          }
+          
+          listElement.appendChild(listItem); // Adiciona o item à lista
+        });
+
+        // Adiciona a lista ao corpo da página (ou outro elemento desejado)
+        document.body.appendChild(listElement);
+      }
+    </script>
+  </body>
+</html>
