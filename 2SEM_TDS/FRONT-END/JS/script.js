@@ -149,3 +149,51 @@ function palindromo() {
     }
   }
 }
+
+//Função callBack
+
+function somar(num1,num2){
+  let res;
+  res = num1 + num2;
+  return res;
+}
+console.log(somar(1,2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+))
