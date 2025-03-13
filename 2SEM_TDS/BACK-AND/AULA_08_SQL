@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS Funcionario (
+	numero integer not null,
+    nome varchar(64),
+    rua varchar(32),
+    nro integer,
+    bairro varchar(20),
+    cidade varchar(20),
+    estado varchar(2),
+    cep varchar(9),
+    salario float,
+    numeroSupervisor integer,
+    primary key (numero),
+    foreign key(numeroSupervisor) references Funcionario (numero)
+);
+
+CREATE TABLE IF NOT EXISTS Departamento (
+	numero integer not null,
+    nome varchar(32),
+    numeroFuncGer integer,
+    dataIniGer date,
+    primary key (numero),
+    foreign key (numeroFuncGer) references Funcionario (numero)
+);
+
+ALTER TABLE Funcionario ADD numerodepto integer;
+
+ALTER TABLE Funcionario ADD FOREIGN KEY(numerodepto) REFERENCES Departamento(numero);
+
+CREATE TABLE IF NOT EXISTS Projetos(
+	numero integer not null,
+    nome varchar(32),
+    primary key(numero),
+    foreign key(numerodepto) REFERENCES Departamento(numero)
+);
+
+CREATE TABLE IF NOT EXISTS Dependente(
+	nome varchar(32) not null,
+    numeroFunc integer not null,
+    dataNasc date,
+    parentesco varchar(32),
+	primary key(numeroFunc,nome),
+    foreign key (numeroFunc) REFERENCES Funcionario(numero)
+);
+
+
