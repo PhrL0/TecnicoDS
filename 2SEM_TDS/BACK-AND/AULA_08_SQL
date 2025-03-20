@@ -1,5 +1,15 @@
-CREATE TABLE IF NOT EXISTS Funcionario (
-	numero integer not null,
+# SCHEMA EMPRESA - AULA 1
+DROP DATABASE IF EXISTS EMPRESA;
+CREATE DATABASE IF NOT EXISTS EMPRESA;
+
+USE EMPRESA;
+-- show databases;
+-- describe ou desc funcionario;
+-- show tables
+
+# Criando tabela DFuncionario
+create table IF NOT EXISTS Funcionario (
+    numero integer not null,
     nome varchar(64),
     rua varchar(32),
     nro integer,
@@ -9,37 +19,54 @@ CREATE TABLE IF NOT EXISTS Funcionario (
     cep varchar(9),
     salario float,
     numeroSupervisor integer,
-    primary key (numero),
-    foreign key(numeroSupervisor) references Funcionario (numero)
+    primary key(numero),
+    foreign key (numeroSupervisor) references Funcionario(numero)
 );
 
-CREATE TABLE IF NOT EXISTS Departamento (
-	numero integer not null,
+# Criando tabela Departamento
+create table IF NOT EXISTS Departamento (
+    numero integer not null,
     nome varchar(32),
     numeroFuncGer integer,
     dataIniGer date,
     primary key (numero),
-    foreign key (numeroFuncGer) references Funcionario (numero)
+    foreign key (numeroFuncGer) references Funcionario(numero)
+   
 );
+alter table Funcionario add numerodepto integer;
+desc Funcionario;
 
-ALTER TABLE Funcionario ADD numerodepto integer;
-
-ALTER TABLE Funcionario ADD FOREIGN KEY(numerodepto) REFERENCES Departamento(numero);
-
-CREATE TABLE IF NOT EXISTS Projetos(
-	numero integer not null,
+create table IF NOT EXISTS Projeto (
+    numero integer not null,
     nome varchar(32),
-    primary key(numero),
-    foreign key(numerodepto) REFERENCES Departamento(numero)
+    numeroDepto integer,
+    primary key (numero),
+    foreign key (numeroDepto) references Departamento(numero)
 );
 
-CREATE TABLE IF NOT EXISTS Dependente(
-	nome varchar(32) not null,
-    numeroFunc integer not null,
+create table Dependente (
+	numeroFunc integer not null,
+    nome varchar(64) not null,
     dataNasc date,
-    parentesco varchar(32),
-	primary key(numeroFunc,nome),
-    foreign key (numeroFunc) REFERENCES Funcionario(numero)
+    parentesco varchar(16),
+    primary key (numeroFunc,nome),
+    foreign key(numeroFunc) references funcionario(numero)
+    on delete cascade
+    on update cascade
+);
+ 
+create table LocalDep(
+	numeroDepto integer not null,
+    localizacao varchar(64) not null,
+    primary key (numeroDepto,localizacao),
+    foreign key (numeroDepto) references departamento(numero)
 );
 
-
+create table FuncionarioProjeto(
+	numeroFunc integer not null,
+    numeroProj integer not null,
+    horas time,
+    primary key(numeroFunc,numeroProj),
+    foreign key(numeroFunc) references funcionario(numero),
+    foreign key(numeroProj) references Projeto(numero)
+);
