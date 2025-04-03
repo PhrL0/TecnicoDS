@@ -310,6 +310,59 @@ select avg(FP.horas) as Media from funcionarioprojeto FP,projeto P where  FP.num
 #11
 select nome,salario,estado from funcionario where salario >= 2200.00 and estado = 'SP';
 
+#12
+
+#13
+select F.nome, P.numeroProj from funcionario F, funcionarioprojeto P where F.numero = P.numeroFunc;
+
+#14
+select F.nome, P.numeroProj from funcionario F, funcionarioprojeto P where F.numero = P.numeroFunc and TIMESTAMPDIFF(HOUR, P.horas, NOW()) > 20;
+
+#15
+select * from funcionario order by nome ASC;
+select * from funcionario order by nome DESC;
+
+#16
+select * from funcionario order by cidade ASC,salario DESC;
+
+#17 
+select nome,salario from funcionario where salario >= 1000 and salario <= 2000;
+
+#18
+select * from funcionario where cidade like '%ar%';
+
+#19
+select max(salario) from funcionario;
+
+#20
+select min(salario) from funcionario;
+
+#21
+select round(avg(salario),2) from funcionario;
+
+#22
+select round(sum(salario),2) from funcionario;
+
+#23
+select nome,salario,count(numero) from funcionario where salario > 1500 group by nome,salario;
+
+#24
+select cidade from funcionario where cidade like 'São%';
+
+#25
+select count(*) from funcionario where salario >= (select avg(salario) from funcionario);
+
+#26
+select * from funcionario where numeroSupervisor is null;
+
+#27
+select * from funcionario where numeroSupervisor is true;
+
+#28
+select F.nome,S.nome from funcionario F,funcionario S where F.numero = S.numeroSupervisor;
+
+#29
+select F.nome,FP.horas from funcionario F, funcionarioprojeto FP where F.numero = FP.numeroFunc and FP.horas = (select max(horas) from funcionarioprojeto);
 
 
 
