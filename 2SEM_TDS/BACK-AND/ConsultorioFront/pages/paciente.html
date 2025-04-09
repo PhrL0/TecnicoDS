@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Clínico - Pacientes</title>
+    <link rel="stylesheet" href="../css/paciente.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1>Clínica Médica</h1>
+            <div class="nav-links">
+                <a href="medico.html">Médicos</a>
+                <a href="paciente.html">Pacientes</a>
+                <a href="consultas.html">Consultas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="form-section">
+            <form id="pacienteForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="dataNascimento">Data de Nascimento</label>
+                        <input type="date" id="dataNascimento" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <button type="submit" id="submitBtn">Cadastrar Paciente</button>
+                    <div class="alert alert-error" id="errorAlert"></div>
+                    <div class="alert alert-success" id="successAlert"></div>
+                </div>
+            </form>
+        </section>
+
+        <section class="pacientes-list">
+            <div class="search-container" style="padding: 1rem;">
+                <input type="text" id="searchInput" placeholder="Buscar pacientes...">
+            </div>
+            <div id="pacientesContainer"></div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Clínica Médica</h3>
+                <p>© 2024 Todos os direitos reservados</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <a href="tel:+5511999999999">(11) 99999-9999</a>
+                <a href="mailto:contato@clinicamedica.com">contato@clinicamedica.com</a>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <a href="/politica-privacidade">Política de Privacidade</a>
+                <a href="/termos-uso">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/paciente.js"></script>
+</body>
+</html>

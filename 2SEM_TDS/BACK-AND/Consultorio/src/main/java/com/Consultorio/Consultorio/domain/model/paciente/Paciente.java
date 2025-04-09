@@ -1,5 +1,4 @@
 package com.Consultorio.Consultorio.domain.model.paciente;
-import com.Consultorio.Consultorio.domain.model.consulta.Consulta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
