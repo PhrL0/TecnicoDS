@@ -3,7 +3,6 @@ package com.Consultorio.Consultorio.domain.model.consulta;
 import com.Consultorio.Consultorio.domain.model.medico.Medico;
 import com.Consultorio.Consultorio.domain.model.paciente.Paciente;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;

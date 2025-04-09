@@ -1,9 +1,7 @@
 package com.Consultorio.Consultorio.domain.model.paciente;
-<<<<<<< HEAD
-=======
+
 import com.Consultorio.Consultorio.domain.model.consulta.Consulta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
->>>>>>> af55dfbad16ed2f96411982e6997cb0a238a75bc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,5 @@
 package com.Consultorio.Consultorio.domain.model.medico;
+
 import com.Consultorio.Consultorio.domain.model.consulta.Consulta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

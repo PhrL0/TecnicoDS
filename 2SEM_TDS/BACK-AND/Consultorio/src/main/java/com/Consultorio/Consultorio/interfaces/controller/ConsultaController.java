@@ -1,4 +1,5 @@
 package com.Consultorio.Consultorio.interfaces.controller;
+
 import com.Consultorio.Consultorio.application.service.ConsultaService;
 import com.Consultorio.Consultorio.domain.model.consulta.Consulta;
 import org.springframework.http.ResponseEntity;
