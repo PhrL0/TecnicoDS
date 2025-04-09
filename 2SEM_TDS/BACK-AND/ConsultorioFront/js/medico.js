@@ -67,7 +67,7 @@ const API_BASE = 'http://localhost:8080/medicos';
 
         const handleEdit = async (id) => {
             try {
-                const response = await fetch(`${API_BASE}/${id}`);
+                const response = await fetch(`${API_BASE}/${Number(id)}`);
                 if (!response.ok) throw new Error('Médico não encontrado');
                 
                 const medico = await response.json();
@@ -78,7 +78,8 @@ const API_BASE = 'http://localhost:8080/medicos';
             } catch (error) {
                 showError(error.message);
             }
-        };
+        };       
+        
 
         const handleDelete = async (id) => {
             if (!confirm('Tem certeza que deseja excluir?')) return;
