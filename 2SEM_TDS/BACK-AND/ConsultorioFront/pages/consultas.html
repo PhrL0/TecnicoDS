@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Consultas</title>
+    <link rel="stylesheet" href="../css/consultas.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1>Clínica Médica</h1>
+            <div class="nav-links">
+                <a href="medico.html">Médicos</a>
+                <a href="paciente.html">Pacientes</a>
+                <a href="consultas.html">Consultas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="form-section">
+            <form id="consultaForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="medicoId">ID do Médico</label>
+                        <input type="number" id="medicoId" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="pacienteId">ID do Paciente</label>
+                        <input type="number" id="pacienteId" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="dataHora">Data e Hora</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <input type="date" id="data" required>
+                            <input type="time" id="hora" required step="300">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="tipo">Tipo de Consulta</label>
+                        <input type="text" id="tipo" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <button type="submit" id="submitBtn">Agendar Consulta</button>
+                    <div class="alert alert-error" id="errorAlert"></div>
+                    <div class="alert alert-success" id="successAlert"></div>
+                </div>
+            </form>
+        </section>
+
+        <section class="consultas-list">
+            <div class="search-container" style="padding: 1rem;">
+                <input type="text" id="searchInput" placeholder="Buscar consultas...">
+            </div>
+            <div id="consultasContainer"></div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Clínica Médica</h3>
+                <p>© 2024 Todos os direitos reservados</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <a href="tel:+5511999999999">(11) 99999-9999</a>
+                <a href="mailto:contato@clinicamedica.com">contato@clinicamedica.com</a>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <a href="/politica-privacidade">Política de Privacidade</a>
+                <a href="/termos-uso">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+
+<script src="../js/consultas.js"></script>
+</body>
+</html>

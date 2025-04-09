@@ -1,4 +1,5 @@
 package com.Consultorio.Consultorio.application.service;
+
 import com.Consultorio.Consultorio.domain.model.consulta.Consulta;
 import com.Consultorio.Consultorio.domain.model.consulta.ConsultaRepository;
 import com.Consultorio.Consultorio.domain.model.medico.Medico;

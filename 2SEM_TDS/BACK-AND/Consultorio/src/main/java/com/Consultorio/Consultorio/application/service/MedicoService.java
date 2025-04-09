@@ -1,4 +1,5 @@
 package com.Consultorio.Consultorio.application.service;
+
 import com.Consultorio.Consultorio.domain.model.medico.Medico;
 import com.Consultorio.Consultorio.domain.model.medico.MedicoRepository;
 import org.springframework.stereotype.Service;
