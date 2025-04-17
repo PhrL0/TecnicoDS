@@ -364,5 +364,13 @@ select F.nome,S.nome from funcionario F,funcionario S where F.numero = S.numeroS
 #29
 select F.nome,FP.horas from funcionario F, funcionarioprojeto FP where F.numero = FP.numeroFunc and FP.horas = (select max(horas) from funcionarioprojeto);
 
+SELECT F.nome,D.nome FROM (funcionario F JOIN departamento D ON F.numero=D.numero);
 
-
+select nome,numeroproj from (funcionario F left outer join FuncionarioProjeto P on F.numero = P.numerofunc);
+select numerofunc,F.nome,numeroproj,P.nome from (funcionarios F right outer join FuncionarioProjeto FP ON F.numero=FP.numerofunc) right outer join projeto P on FP.numeroproj=P.numero;
+select F.numero AS funcionarioNumero, F.nome as funcionarioNome, P.numero as ProjetoNumero, P.nome as projetoNome FROM funcionario F left outer Join FuncionarioProjeto FP on F.numero = FP.numerofunc left outer join Projeto P on FP.numereproj = P.numero union select Fnumero as Funcionarionumero, F.nome as funcionarioNome, P.numero as ProjetoNumero, P.nome as projetoNome FROM funcionario F left outer join FuncionarioPorjeto FP on F.numero = FP.numerofunc LEFT outer join Porjeto.P on FP.numeroProj = P.numero
+select F.numero,F.nome,P.numero,P.nome from funcionario F left outer join FuncionarioProjeto FP on F.numero = FP.numeroFunc left outer join Projeto P on FP.numeroProj = P.numero where FP.numeroproj is Null;
+select F.numero,F.nome,P.numero,P.nome from funcionario F right outer join FuncionarioProjeto FP on F.numero = FP.numeroFunc right outer join Projeto P on FP.numeroProj = P.numero where FP.numeroproj is Null;
+select * from user;
+select * from (select numerofunc,sec_to_time(sum(time_to_sec(horas)))
+select D.numero, d.NOME, AVG(SALARIO) as media from departamento D, funcionario F where D.numero = F.numerodepto group by F.numerodepto;
