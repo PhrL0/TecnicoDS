@@ -7,10 +7,11 @@ const localStorageService = {
             "password":password
         }
 
-        localStorage.setItem(token,user)
+        localStorage.setItem(token,JSON.stringify(user))
     },
     getUserSession(token){
-        return localStorage.getItem(token);
+        const data =  localStorage.getItem(token);
+        return data ? JSON.parse(data) : null;
     }
 
 }
