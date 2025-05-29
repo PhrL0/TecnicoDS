@@ -1,376 +1,338 @@
-# SCHEMA EMPRESA - AULA 1
-DROP DATABASE IF EXISTS EMPRESA;
-CREATE DATABASE IF NOT EXISTS EMPRESA;
-
-USE EMPRESA;
+DROP DATABASE IF EXISTS futebol_aula;
+CREATE DATABASE IF NOT EXISTS futebol_aula ;
+USE futebol_aula;
 -- show databases;
 -- describe ou desc funcionario;
 -- show tables
 
-# Criando tabela DFuncionario
-create table IF NOT EXISTS Funcionario (
-    numero integer not null,
-    nome varchar(64),
-    rua varchar(32),
-    nro integer,
-    bairro varchar(20),
-    cidade varchar(20),
-    estado varchar(2),
-    cep varchar(9),
-    salario float,
-    numeroSupervisor integer,
-    primary key(numero),
-    foreign key (numeroSupervisor) references Funcionario(numero)
+
+-- Inicio da Execucao com usuario futebol
+-- Remover tabelas do banco (ordem importa)
+/*
+DROP TABLE Jogo;
+DROP TABLE EquipeCampeonato;
+DROP TABLE JogadorBrasileiro;
+DROP TABLE JogadorEstrangeiro;
+DROP TABLE Cidade;
+DROP TABLE PaisesTecnicos;
+DROP TABLE Tecnico;
+DROP TABLE Campeonato;
+DROP TABLE Equipe;
+ALTER TABLE SeqEquipe AUTO_INCREMENT = 1;
+ALTER TABLE SeqCampeonato AUTO_INCREMENT = 1;
+*/
+CREATE TABLE Equipe (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(32)
 );
 
-# Criando tabela Departamento
-create table IF NOT EXISTS Departamento (
-    numero integer not null,
-    nome varchar(32),
-    numeroFuncGer integer,
-    dataIniGer date,
-    primary key (numero),
-    foreign key (numeroFuncGer) references Funcionario(numero)
-   
-);
-alter table Funcionario add numerodepto integer;
-desc Funcionario;
+INSERT INTO Equipe (id, nome) VALUES (1, 'Palmeiras');
+INSERT INTO Equipe (id, nome) VALUES (2, 'Santos');
+INSERT INTO Equipe (id, nome) VALUES (3, 'SCCP');
+INSERT INTO Equipe (id, nome) VALUES (4, 'SPFC');
 
-create table IF NOT EXISTS Projeto (
-    numero integer not null,
-    nome varchar(32),
-    numeroDepto integer,
-    primary key (numero),
-    foreign key (numeroDepto) references Departamento(numero)
-);
-create table if not exists Dependente (
-	numeroFunc integer not null,
-    nome varchar(64) not null,
-    dataNasc date,
-    parentescpo varchar(16),
-    primary key (numeroFunc, nome),
-    foreign key (numeroFunc) references Funcionario(numero)
-    on delete cascade
-    on update cascade
-);
-drop table Dependente;
-
-create table if not exists LocalDep (
-	numeroDepto integer not null,
-    localizacao varchar(32),
-    primary key (numeroDepto, localizacao),
-    foreign key (numeroDepto) references Departamento(numero)
-);
-create table if not exists FuncionarioProjeto (
-	numeroFunc integer,
-    numeroProj integer,
-    horas time,
-    primary key (numeroFunc, numeroProj),
-    foreign key (numeroFunc) references Funcionario(numero),
-    foreign key (numeroProj) references Projeto(numero)
+CREATE TABLE Campeonato (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(32)
 );
 
-# *************** INSERINDO VALORES NAS TABELAS FUNCIONARIO **************
-
-insert into Funcionario(numero, nome, rua, nro, bairro, cidade, estado, cep,salario, numeroSupervisor, numerodepto)
-values (1,'João', 'Rua Bahia', 483, 'Cidade Jardim', 'Valinhos', 'SP', 23900-000, 3200.30, null, null);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (2, 'Jose', 'Rua Marechal', 27, 'Paulistano', 'Salto', 'SP', '54621-000', 1820.77, 1, 1);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (3, 'Luciano', 'Rua Teodoro', 83, 'Centro', 'Araras', 'SP', '52412-000', 1700, 2, 4);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (4, 'Danilo', 'Rua Vergueiro', 1022, 'Paraiso', 'Sao Paulo', 'SP', '13140-000', 2200.00, 1, 5);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (5, 'Patricia', 'Rua Lima', 63, 'Itaim', 'Sao Paulo', 'SP', '45123-000', 2300.00, 1, 3);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (6, 'Mariana', 'Rua Sansao', 34, 'Jacare', 'Sao Carlos', 'SP', '55981-000', 1200, 1, 5);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (7, 'Cristiano', 'Rua X', 10, 'Centro', 'Araraquara', 'SP', '14524-000', 3500.00, 2, 5);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (8, 'Fabiano', 'Rua III', 15, 'Centro', 'Sao Carlos', 'SP', '12345-000', 1950.00, 2, 1);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (9, 'Bastiao', 'Rua Sete', 19, 'Centro', 'Araraquara', 'SP', '98745-000', 6500.00, 2, 6);
-
-insert into Funcionario (numero, nome, rua, nro, bairro, cidade, estado, cep, salario, numeroSupervisor, numeroDepto)
-values (10, 'Ricardo', 'Rua 13 de Maio', 55, 'Joquei', 'Sao Paulo', 'SP', '33641-000', 2800.00, 1, 2);
-
-# *************** INSERINDO VALORES NAS TABELAS DEPARTAMENTO **************
-insert into Departamento (numero, nome, numeroFuncGer, dataIniGer)
-    values (1, 'Financeiro', 1, '2010-08-20');
-   
-insert into Departamento (numeroFuncGer, numero, nome, dataIniGer)
-    values (2, 3, 'Auditoria', '2010-08-20');
-   
-insert into Departamento (numero, nome, numeroFuncGer, dataIniGer)
-    values (4, 'Compras', null, null);
-   
-insert into Departamento (numero, nome)
-    values (5, 'Vendas');
-   
-insert into Departamento (numero, nome)
-    values (6, 'Juridico');
-
-# *************** INSERINDO VALORES NAS TABELAS LOCALDEP **************
-#insert into LocalDep(numeroDepto, localizacao) values (1, 'Edificio Marte');
-
-insert into localDep(numeroDepto, localizacao)
-values (1, 'Edificio Marte');
-
-insert into localDep(numeroDepto, localizacao)
-values (1, 'Edificio Planeta Vermelho');
-
-insert into localDep(numeroDepto, localizacao)
-values (2, 'Edificio Saturno');
-
-insert into localDep(numeroDepto, localizacao)
-values (3, 'Edificio Plutao');
-
-insert into localDep(numeroDepto, localizacao)
-values (3, 'Edificio Ex-Planeta');
-
-insert into localDep(numeroDepto, localizacao)
-values (4, 'Edificio Jupiter');
-
-insert into localDep(numeroDepto, localizacao)
-values (5, 'Edificio Lua');
-
-alter table Dependente change parentescpo parentesco varchar(16);
-# *************** INSERINDO VALORES NAS TABELAS DEPENDENTE **************
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (5, 'Luizinho', '2010-04-02', 'Filho');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (5, 'Mariazinha', '2012-06-06', 'Filha');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (1, 'Julia', '2013-04-02', 'Filha');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (1, 'Ana', '2006-04-03', 'Filha');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (1, 'Maria', '1976-05-03', 'Esposa');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (3, 'Lucas', '1998-11-28', 'Filho');
-
-insert into Dependente (numeroFunc, nome, dataNasc, parentesco)
-values (2, 'Joana', '1935-11-28', 'Mae');
-
-
-# *************** INSERINDO VALORES NAS TABELAS PROJETO **************
-insert into Projeto (numero, nome, numeroDepto)
-values (1, 'Projeto Serra Leste', 1);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (2, 'Projeto Porto Tubarao', 5);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (3, 'Projeto sei la', 3);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (4, 'Projeto Niquel', 1);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (5, 'Projeto COVID', 3);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (6, 'Projeto Lava Jato', 5);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (7, 'Projeto Serra Pelada', 1);
-
-insert into Projeto (numero, nome, numeroDepto)
-values (8, 'Projeto Vale', 3);
-
-# *************** INSERINDO VALORES NAS TABELAS FUNCIONARIOPROJETO **************
-insert into FuncionarioProjeto(numeroFunc, numeroProj, horas)
-values(10, 1, '10:45:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (1, 1, '10:45:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (1, 2, '09:25:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (1, 3, '10:15:10');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (2, 4, '20:45:15');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (2, 5, '19:45:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (2, 6, '16:13:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (2, 7, '18:00:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (2, 8, '08:25:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (7, 8, '10:25:00');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (8, 2, '11:22:03');
-
-insert into FuncionarioProjeto (numeroFunc, numeroProj, horas)
-values (10, 4, '21:55:10');
-# *************** FIM INSERÇÕES **************
-
-#CONSULTAS
-
-desc Funcionario;
-select * from Funcionario;
-select * from Departamento;
-select * from LocalDep;
-select * from Projeto;
-
-select distinct cidade from funcionario;
-select nome, cidade, salario / 1000 from funcionario;
-
-select * from Funcionario where cidade= 'Araraquara' and salario >= 3200; 
-select funcionario.nome, numeroproj from funcionario, funcionarioprojeto where numero = numerofunc;
-select * from funcionarioprojeto;
-select funcionario.nome, numeroproj from funcionario, funcionarioprojeto where numero = numerofunc and horas < '30:00:00';
-
-select * from funcionario order by salario desc, nome asc;
-
-select * from funcionario where salario between 2000 and 3000;
-
-select nome,rua from funcionario where rua like '%Sao Paulo%';
-
-select nome,rua from funcionario where nome not like 'Maria%';
-
-select max(salario) as maior_Salario from funcionario;
-
-select min(salario) as min_salario from funcionario;
-
-select avg(salario) as media_salario from funcionario;
-
-select count(*) as total_funcionarios from funcionario where salario > 1000;
-
-select nome,salario from funcionario where salario = (select min(salario) from funcionario);
-
-select nome,round(salario,2) from funcionario where salario is not null;
-
-select nome from funcionario F, participa P where F.numero = P.numerofunc and horas = (select max(horas) from participafp);
-
-select distinct nome from funcionario F, participaFP P where F.numero = P.numerofunc;
-
-select nome from funcionario F, participaFP where F.numero = P.numerofunc AND P.horas > all (select distinct horas from participaFP where numeroproj = 2);
-
-select nome from funcionario F where exists (select * from participaFP P where F.numero = P.numerofunc);
-
-
-
-
-#Atividades
-
-#1
-select * from funcionario;
-
-#2
-select estado from funcionario;
-
-#3
-select distinct salario from funcionario;
-
-#4
-select nome from funcionario where nome like '%r%';
-
-#5
-select F.nome,numeroFuncGer from funcionario F,departamento DP where F.numero = DP.numeroFuncGer;
-
-#6
-select F.numero,F.nome,F.salario,DP.dataIniGer from funcionario F, departamento DP where  F.numero = DP.numeroFuncGer and (salario > 2000.00 and TIMESTAMPDIFF(YEAR, dataIniGer, CURDATE()) > 3);
-
-#7
-select * from funcionario where salario = (select max(salario) from funcionario);
-
-#8
-select PROJ.nome,FP.horas from projeto PROJ, funcionarioprojeto FP where FP.numeroProj = 2 and FP.numeroProj = PROJ.numero; 
-
-#9 
-select avg(FP.horas) as Media from funcionarioprojeto FP,projeto P where  FP.numeroProj = 3 and FP.numeroProj = P.numero;
-
-#10
-
-#11
-select nome,salario,estado from funcionario where salario >= 2200.00 and estado = 'SP';
-
-#12
-
-#13
-select F.nome, P.numeroProj from funcionario F, funcionarioprojeto P where F.numero = P.numeroFunc;
-
-#14
-select F.nome, P.numeroProj from funcionario F, funcionarioprojeto P where F.numero = P.numeroFunc and TIMESTAMPDIFF(HOUR, P.horas, NOW()) > 20;
-
-#15
-select * from funcionario order by nome ASC;
-select * from funcionario order by nome DESC;
-
-#16
-select * from funcionario order by cidade ASC,salario DESC;
-
-#17 
-select nome,salario from funcionario where salario >= 1000 and salario <= 2000;
-
-#18
-select * from funcionario where cidade like '%ar%';
-
-#19
-select max(salario) from funcionario;
-
-#20
-select min(salario) from funcionario;
-
-#21
-select round(avg(salario),2) from funcionario;
-
-#22
-select round(sum(salario),2) from funcionario;
-
-#23
-select nome,salario,count(numero) from funcionario where salario > 1500 group by nome,salario;
-
-#24
-select cidade from funcionario where cidade like 'São%';
-
-#25
-select count(*) from funcionario where salario >= (select avg(salario) from funcionario);
-
-#26
-select * from funcionario where numeroSupervisor is null;
-
-#27
-select * from funcionario where numeroSupervisor is true;
-
-#28
-select F.nome,S.nome from funcionario F,funcionario S where F.numero = S.numeroSupervisor;
-
-#29
-select F.nome,FP.horas from funcionario F, funcionarioprojeto FP where F.numero = FP.numeroFunc and FP.horas = (select max(horas) from funcionarioprojeto);
-
-SELECT F.nome,D.nome FROM (funcionario F JOIN departamento D ON F.numero=D.numero);
-
-select nome,numeroproj from (funcionario F left outer join FuncionarioProjeto P on F.numero = P.numerofunc);
-select numerofunc,F.nome,numeroproj,P.nome from (funcionarios F right outer join FuncionarioProjeto FP ON F.numero=FP.numerofunc) right outer join projeto P on FP.numeroproj=P.numero;
-select F.numero AS funcionarioNumero, F.nome as funcionarioNome, P.numero as ProjetoNumero, P.nome as projetoNome FROM funcionario F left outer Join FuncionarioProjeto FP on F.numero = FP.numerofunc left outer join Projeto P on FP.numereproj = P.numero union select Fnumero as Funcionarionumero, F.nome as funcionarioNome, P.numero as ProjetoNumero, P.nome as projetoNome FROM funcionario F left outer join FuncionarioPorjeto FP on F.numero = FP.numerofunc LEFT outer join Porjeto.P on FP.numeroProj = P.numero
-select F.numero,F.nome,P.numero,P.nome from funcionario F left outer join FuncionarioProjeto FP on F.numero = FP.numeroFunc left outer join Projeto P on FP.numeroProj = P.numero where FP.numeroproj is Null;
-select F.numero,F.nome,P.numero,P.nome from funcionario F right outer join FuncionarioProjeto FP on F.numero = FP.numeroFunc right outer join Projeto P on FP.numeroProj = P.numero where FP.numeroproj is Null;
-select * from user;
-select * from (select numerofunc,sec_to_time(sum(time_to_sec(horas)))
-select D.numero, d.NOME, AVG(SALARIO) as media from departamento D, funcionario F where D.numero = F.numerodepto group by F.numerodepto;
+INSERT INTO Campeonato (id, nome) VALUES (1, 'Campeonato Brasileiro');
+INSERT INTO Campeonato (id, nome) VALUES (2, 'Copa do Brasil');
+
+CREATE TABLE JogadorBrasileiro (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cpf VARCHAR(16) UNIQUE,
+  nome VARCHAR(32),
+  posicao VARCHAR(16),
+  idEquipe INT,
+  salario INT(9),
+  CONSTRAINT fk_jogadorbrasileiro_idEquipe FOREIGN KEY(idEquipe)
+    REFERENCES Equipe(id),
+  CONSTRAINT ck_jogadorbrasileiro_posicao CHECK (posicao IN ('Goleiro', 'Lateral', 'Zagueiro', 'Meio-Campo', 'Atacante'))
+);
+
+
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('111.222.333.44', 'Sao Marcos', 'Goleiro', 1, 350000.75);
+  select * from jogadorbrasileiro;
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('098.765.345.12', 'Neymar', 'Atacante', 2, 565000.50);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('045.456.555.12', 'Betao', 'Zagueiro', 3, 18000.00);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('235.457.789-65', 'Alex', 'Meio-Campo', 1, 310000.20);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('777.854.123-68', 'Ronaldinho', 'Atacante', 2, 425000.00);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('159.487.236-00', 'Gilmar Fuba', 'Atacante', 3, 8500.00);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('457.148.230-00', 'Iranildo', 'Meio-Campo', null, 0);
+INSERT INTO JogadorBrasileiro (cpf, nome, posicao, idEquipe, salario)
+  VALUES ('476.555.788-15', 'Odvan', 'Zagueiro', null, 0);
+
+
+
+CREATE TABLE JogadorEstrangeiro (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  passaporte VARCHAR(16) UNIQUE,
+  nome VARCHAR(32),
+  posicao VARCHAR(16),
+  idEquipe INT,
+  paisOrigem VARCHAR(16),
+  salario INT(9),
+  CONSTRAINT fk_jogadorestrangeiro_idEquipe FOREIGN KEY(idEquipe)
+    REFERENCES Equipe(id)
+);
+
+INSERT INTO JogadorEstrangeiro (passaporte, nome, posicao, idEquipe, paisOrigem, salario)
+  VALUES ('586.324.111.44', 'Arce', 'Lateral', 1, 'Paraguai', 200500.10);
+INSERT INTO JogadorEstrangeiro (passaporte, nome, posicao, idEquipe, paisOrigem, salario)
+  VALUES ('348.562.363.14', 'Mancuso', 'Atacante', 3, 'Argentina', 110000.75);
+INSERT INTO JogadorEstrangeiro (passaporte, nome, posicao, idEquipe, paisOrigem, salario)
+  VALUES ('456.357.698.47', 'Gioino', 'Atacante', 3, 'Argentina', 15000);
+
+
+CREATE TABLE EquipeCampeonato (
+  idEquipe INT,
+  idCampeonato INT,
+  posicao INT,
+  PRIMARY KEY (idEquipe, idCampeonato),
+  CONSTRAINT fk_equipecampeonato_idEquipe FOREIGN KEY (idEquipe)
+    REFERENCES Equipe(id),
+  CONSTRAINT fk_equipecampeonato_idCamp FOREIGN KEY (idCampeonato)
+    REFERENCES Campeonato(id),
+  CONSTRAINT ck_equipecampeonato_posicao CHECK (posicao > 0)
+);
+
+INSERT INTO EquipeCampeonato (idEquipe, idCampeonato, posicao)
+  VALUES (1, 1, 1);
+INSERT INTO EquipeCampeonato (idEquipe, idCampeonato, posicao)
+  VALUES (2, 1, 16);
+INSERT INTO EquipeCampeonato (idEquipe, idCampeonato, posicao)
+  VALUES (3, 1, 3);
+INSERT INTO EquipeCampeonato (idEquipe, idCampeonato, posicao)
+  VALUES (4, 1, 8);
+
+CREATE TABLE Cidade (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(32),
+  estado VARCHAR(2)
+);
+
+INSERT INTO Cidade (id, nome, estado) VALUES (1, 'Sao Paulo', 'SP');
+INSERT INTO Cidade (id, nome, estado) VALUES (2, 'Rio de Janeiro', 'RJ');
+INSERT INTO Cidade (id, nome) VALUES ( 3, 'Belo Horizonte');
+INSERT INTO Cidade (id, nome) VALUES (4, 'Porto Alegre');
+INSERT INTO Cidade (id, nome) VALUES (5, 'Recife');
+
+CREATE TABLE Tecnico (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cpf VARCHAR(16) UNIQUE,
+  nome VARCHAR(32),
+  idEquipe INT,
+  dataNasc DATE,
+  CONSTRAINT fk_tecnico_idEquipe FOREIGN KEY(idEquipe)
+    REFERENCES Equipe(id)
+);
+
+INSERT INTO Tecnico (id, cpf, nome, idEquipe, dataNasc)
+  VALUES (1, '123.654.875-90', 'Marcelo de Oliveira', 1, '1965-03-04');
+INSERT INTO Tecnico (id, cpf, nome, idEquipe, dataNasc)
+  VALUES (2, '565.187.765-12', 'Dorival Junior', 2, '1962-04-25');
+INSERT INTO Tecnico (id, cpf, nome, idEquipe, dataNasc)
+  VALUES (3, '098.904.642-65', 'Tite', 3, '1961-05-25');
+INSERT INTO Tecnico (id, cpf, nome, idEquipe, dataNasc)
+  VALUES (4, '187.644.235-20', 'Osorio', 4, '1962-06-08');
+
+CREATE TABLE PaisesTecnicos (
+  idTecnico INT,
+  pais VARCHAR(32),
+  PRIMARY KEY (idTecnico, pais),
+  FOREIGN KEY (idTecnico)
+    REFERENCES Tecnico(id)
+    ON DELETE CASCADE
+);
+
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (1, 'Brasil');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (2, 'Brasil');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (3, 'Brasil');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (3, 'Emirados Arabes');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (4, 'Estados Unidos');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (4, 'Colombia');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (4, 'Mexico');
+INSERT INTO PaisesTecnicos (idTecnico, pais) VALUES (4, 'Brasil');
+
+CREATE TABLE Jogo (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  dataJogo DATE,
+  idEquipeCasa INT,
+  idEquipeFora INT,
+  golsEquipeCasa INT,
+  golsEquipeFora INT,
+  idCidade INT,
+  estadio VARCHAR(32),
+  idCampeonato INT,
+  FOREIGN KEY (idEquipeCasa)
+    REFERENCES Equipe (id),
+  FOREIGN KEY (idEquipeFora)
+    REFERENCES Equipe (id),
+  FOREIGN KEY (idCidade)
+    REFERENCES Cidade (id)
+    ON DELETE SET NULL,
+  FOREIGN KEY (idCampeonato)
+    REFERENCES Campeonato (id)
+);
+
+INSERT INTO Jogo (id, dataJogo, idEquipeCasa, idEquipeFora,
+                golsEquipeCasa, golsEquipeFora, idCidade, estadio, idCampeonato)
+  VALUES (1, '2015-06-10', 3, 1, 0, 2, 1, 'Itaquerao', 1);
+INSERT INTO Jogo (id, dataJogo, idEquipeCasa, idEquipeFora,
+                golsEquipeCasa, golsEquipeFora, idCidade, estadio, idCampeonato)
+  VALUES (2, '2015-06-11', 2, 4, 2, 2, 1, 'Vila Belmiro', 1);
+INSERT INTO Jogo (id, dataJogo, idEquipeCasa, idEquipeFora,
+                golsEquipeCasa, golsEquipeFora, idCidade, estadio, idCampeonato)
+  VALUES (3, '2015-06-11', 2, 3, 3, 2, NULL, 'Morumbi', 1);
+
+
+INSERT INTO equipe (nome) VALUES ('Flamengo');
+INSERT INTO equipe (nome) VALUES ('Fluminense');
+INSERT INTO equipe (nome) VALUES ('Vasco');
+INSERT INTO equipe (nome) VALUES ('Gremio');
+INSERT INTO equipe (nome) VALUES ('Internacional');
+INSERT INTO equipe (nome) VALUES ('Atletico PR');
+INSERT INTO equipe (nome) VALUES ('Coritiba');
+INSERT INTO equipe (nome) VALUES ('Atletico MG');
+INSERT INTO equipe (nome) VALUES ('Cruzeiro');
+INSERT INTO equipe (nome) VALUES ('Bahia');
+INSERT INTO equipe (nome) VALUES ('Vitoria');
+INSERT INTO equipe (nome) VALUES ('Sport');
+INSERT INTO equipe (nome) VALUES ('Nautico');
+INSERT INTO equipe (nome) VALUES ('Ponte Preta');
+INSERT INTO equipe (nome) VALUES ('Guarani');
+INSERT INTO equipe (nome) VALUES ('Portuguesa');
+
+select * from equipe;
+
+DELIMITER //
+
+ALTER TABLE JogadorBrasileiro
+ADD COLUMN DataUltimaAlteracao DATETIME,
+ADD COLUMN UsuarioUltimaAlteracao VARCHAR(16),
+ADD COLUMN operacao VARCHAR(16);
+
+CREATE TRIGGER TR_RegistraAlteracaoJogadorBR
+BEFORE INSERT ON JogadorBrasileiro
+FOR EACH ROW
+BEGIN 
+	SET NEW.DataUltimaAlteracao = NOW();
+	SET NEW.UsuarioUltimaAlteracao  = CURRENT_USER();
+	SET NEW.operacao = 'INSERT';
+END;
+
+CREATE TRIGGER TR_RegistraAlteracaoJogadorBR_UPDATE
+BEFORE UPDATE ON JogadorBrasileiro
+FOR EACH ROW
+BEGIN 
+	SET NEW.DataUltimaAlteracao = NOW();
+	SET NEW.UsuarioUltimaAlteracao  = CURRENT_USER();
+	SET NEW.operacao = 'INSERT';
+END;
+
+DELIMITER ;
+SET SQL_SAFE_UPDATES=0;
+UPDATE JogadorBrasileiro
+SET salario = salario * 1.1
+WHERE nome LIKE 'Sao Marcos';
+
+INSERT JogadorBrasileiro(cpf,nome,posicao,idEquipe,salario) VALUES ('064.176.178.09', 'Juca Bala', 'Goleiro',7,10900);
+
+SHOW TRIGGERS;
+
+
+CREATE TABLE auditoriaJogadorBr(
+	idJogadorBr INT,
+    salarioAntigo DECIMAL(10,2),
+    salNovo DECIMAL(10,2),
+    usuario VARCHAR(16),
+    dataAlteracao DATETIME
+);
+
+SET @habilitar_auditoria = 1;
+DELIMITER //
+
+CREATE TRIGGER tr_auditoriaSalarioJogadorBr
+BEFORE UPDATE ON JogadorBrasileiro
+FOR EACH ROW
+BEGIN
+	IF @habilitar_auditoria = 1 AND OLD.salario <> NEW.salario THEN
+		INSERT INTO auditoriaJogadorBr(
+			idJogadorBr,salarioAntigo,salNovo, usuario, dataAlteracao
+        ) VALUES (
+			OLD.id, OLD.salario, NEW.salario, CURRENT_USER(), NOW()
+		);
+	END IF;
+END;
+//
+DELIMITER ;
+
+INSERT JogadorBrasileiro(cpf,nome,posicao,idEquipe,salario) VALUES ('084.272.128.09', 'Vini Bala', 'Atacante',7,100900);
+
+SHOW TRIGGERS;
+
+
+#Atividade Triggers
+
+CREATE TABLE registroCartao (
+id INT PRIMARY KEY AUTO_INCREMENT,
+id_jogador INT,
+origem ENUM('brasileiro', 'estrangeiro') NOT NULL,
+tipo ENUM('amarelo', 'vermelho') NOT NULL,
+data_aplicacao DATETIME DEFAULT CURRENT_TIMESTAMP );
+
+#Adicionando a coluna cartoes
+ALTER TABLE JogadorBrasileiro ADD COLUMN cartoes INT DEFAULT 0;
+ALTER TABLE JogadorEstrangeiro ADD COLUMN cartoes INT DEFAULT 0;
+
+
+DELIMITER //
+
+CREATE TRIGGER atualiza_cartoes
+AFTER INSERT ON registroCartao
+FOR EACH ROW
+BEGIN 
+	IF NEW.origem = 'brasileiro' THEN
+		UPDATE jogadorBrasileiro SET cartoes = cartoes + 1
+        WHERE id = new.id_jogador;
+	ELSE
+		UPDATE jogadorEstrangeiro SET cartoes = cartoes + 1
+        WHERE id = new.id_jogador;
+	END IF;
+END;
+
+//
+DELIMITER ;
+
+#Registrar cartoes amarelo para o jogador brasileiro
+
+INSERT INTO registroCartao(id_jogador,origem,tipo) VALUES (1,'brasileiro','amarelo');
+
+select * from registroCartao;
+select * from jogadorBrasileiro;
+
+#Atividadeee
+
+DELIMITER //
+CREATE TRIGGER verifica_cartoes
+AFTER INSERT ON registroCartao
+FOR EACH ROW
+BEGIN 
+	IF NEW.tipo = 'amarelo' THEN
+		IF (SELECT COUNT(cartoes) FROM jogadorBrasileiro AS jb WHERE jb.id = NEW.id_jogador >= 3) THEN
+			UPDATE registroCartao SET tipo = 'vermelho' WHERE id = NEW.id;
+		END IF;
+	END IF;
+END;
+
+//
+DELIMITER ;
+        
