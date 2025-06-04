@@ -1,8 +1,9 @@
-import { Prisma,PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../generated/prisma";
+
 const prisma = new PrismaClient();
 
 export const produtoRepository = {
-    cadastrarProduto: async(nome: string,textoDescritivo: string,cor: string, fabricante: string, preco: number,quantidade: number,imagens: string): Promise<any> =>{
+    cadastrarProduto: async(nome: string,textoDescritivo: string,cor: string, fabricante: string, preco: number,quantidade: number,urlImagensArray: string[]): Promise<any> =>{
         try{
             const result = await prisma.produto.create({
                 data:{
@@ -12,7 +13,9 @@ export const produtoRepository = {
                     fabricante:fabricante,
                     preco:preco,
                     quantidade:quantidade,
-                    imagens:imagens
+                    imagens:{
+                        create: urlImagensArray.map(url => ({ urlImagem: url }))
+                    }
                 }
             });
             return result;
@@ -23,8 +26,8 @@ export const produtoRepository = {
     consultaProduto: async():Promise<any> =>{
         try{
             const result = await prisma.produto.findMany({
-                select:{
-                    imagens:true
+                include: {
+                    imagens: true,
                 }
             });
             return result;

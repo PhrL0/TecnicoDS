@@ -11,7 +11,7 @@ export const produtoController = {
                 fabricante: string,
                 preco: number,
                 quantidade: number,
-                imagens: string
+                imagens: string[]
             } 
 
             if(!nome && !textoDescritivo && !cor && !fabricante && !preco && !quantidade && !imagens){
@@ -32,22 +32,13 @@ export const produtoController = {
     },
     consultaProdutos: async(request: FastifyRequest,reply: FastifyReply):Promise<void> =>{
         try{
-            const {id,nome,textoDescritivo,cor,fabricante,preco,quantidade,imagens} = await produtoRepository.consultaProduto();
+            const result = await produtoRepository.consultaProduto();
 
-            if(!id){
+            if(result.length === 0){
                 return reply.status(400).send({ error: 'Nenhum produto encontrado!'});
             }
 
-            return reply.send({
-                id:id,
-                nome:nome,
-                textoDescritivo:textoDescritivo,
-                cor:cor,
-                fabricante:fabricante,
-                preco:preco,
-                quantidade:quantidade,
-                imagens:imagens
-            })
+            return reply.send({result})
         } catch(err){
             console.error("Erro interno na busca produto",err);
         }
