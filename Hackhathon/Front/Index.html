@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Produtos</title>
+    <link rel="stylesheet" href="CSS/Style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciamento de Produtos</h1>
+
+        <section id="add-product-section">
+            <h2>Adicionar Novo Produto</h2>
+            <form id="add-product-form">
+                <input type="text" id="nome" placeholder="Nome" required>
+                <input type="text" id="textoDescritivo" placeholder="Descrição" required>
+                <input type="text" id="cor" placeholder="Cor" required>
+                <input type="text" id="fabricante" placeholder="Fabricante" required>
+                <input type="number" id="preco" placeholder="Preço" step="0.01" required>
+                <input type="number" id="quantidade" placeholder="Quantidade" required>
+                <input type="text" id="imagens" placeholder="URLs das Imagens (separadas por vírgula)" required>
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+            <p id="add-message" class="message"></p>
+        </section>
+
+        <section id="product-list-section">
+            <h2>Lista de Produtos</h2>
+            <div id="product-list">
+                <p>Carregando produtos...</p>
+            </div>
+            <p id="list-message" class="message"></p>
+        </section>
+
+        <section id="update-stock-section" style="display:none;">
+            <h2>Atualizar Estoque</h2>
+            <form id="update-stock-form">
+                <input type="number" id="updateProductId" placeholder="ID do Produto" required>
+                <input type="number" id="updateQuantity" placeholder="Nova Quantidade" required>
+                <button type="submit">Atualizar Estoque</button>
+                <button type="button" id="cancelUpdate">Cancelar</button>
+            </form>
+            <p id="update-message" class="message"></p>
+        </section>
+    </div>
+    <script src="JS/Script.js"></script>
+</body>
+</html>
