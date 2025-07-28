@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Industrial IoT</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2A5C82;
+            --secondary-color: #5E9CD3;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --background-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            max-width: 1200px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sensor-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-left: 4px solid var(--secondary-color);
+            transition: transform 0.2s;
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .sensor-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .sensor-unit {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 2rem;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: var(--box-shadow);
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .connected {
+            background: var(--success-color);
+        }
+
+        .disconnected {
+            background: var(--danger-color);
+        }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .sensor-value {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>Sistema de Monitoramento Industrial</h1>
+    </nav>
+
+    <div class="connection-status disconnected" id="status">Desconectado</div>
+
+    <main class="main-content">
+        <div class="sensor-grid">
+            <div class="sensor-card">
+                <h3>Temperatura <span class="sensor-unit">(°C)</span></h3>
+                <div class="sensor-value" id="temperatura">--</div>
+            </div>
+            <div class="sensor-card">
+                <h3>Umidade <span class="sensor-unit">(%)</span></h3>
+                <div class="sensor-value" id="umidade">--</div>
+            </div>
+            <div class="sensor-card">
+                <h3>Tensão <span class="sensor-unit">(V)</span></h3>
+                <div class="sensor-value" id="tensao">--</div>
+            </div>
+            <div class="sensor-card">
+                <h3>Presença</h3>
+                <div class="sensor-value" id="presenca">--</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div id="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chartPresenca"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Sistema de Monitoramento em Tempo Real • Versão 1.0</p>
+    </footer>
+
+    <script>
+        const XAXISRANGE = 60000; 
+        let chart,chartPresenca;
+        let temperatura = [];
+        let tensao = [];
+        let umidade = [];
+        let presenca = [];
+
+        function initChart(dados) {
+            const timestamp = new Date().getTime();
+
+            temperatura.push({ x: timestamp, y: dados.temperatura });
+            umidade.push({ x: timestamp, y: dados.umidade });
+            tensao.push({ x: timestamp, y: dados.tensao });
+
+            if (temperatura.length > 60) temperatura.shift();
+            if (umidade.length > 60) umidade.shift();
+            if (tensao.length > 60) tensao.shift();
+
+            const options = {
+                series: [
+                    { name: 'Temperatura', data: [...temperatura] },
+                    { name: 'Umidade', data: [...umidade] },
+                    { name: 'Tensão', data: [...tensao] }
+                ],
+                chart: {
+                    id: 'realtime',
+                    height: 350,
+                    type: 'line',
+                    animations: {
+                        enabled: true,
+                        easing: 'linear',
+                        dynamicAnimation: { speed: 1000 }
+                    },
+                    toolbar: { show: false },
+                    zoom: { enabled: true }
+                },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth' },
+                title: {
+                    text: 'Monitoramento em Tempo Real',
+                    align: 'left'
+                },
+                markers: { size: 0 },
+                xaxis: {
+                    type: 'datetime',
+                    range: XAXISRANGE,
+                },
+                yaxis: { max: 250 },
+                legend: { show: true }
+            };
+
+            if (!chart) {
+                chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            } else {
+                chart.updateSeries([
+                    { name: 'Temperatura', data: [...temperatura] },
+                    { name: 'Umidade', data: [...umidade] },
+                    { name: 'Tensão', data: [...tensao] }
+                ]);
+            }
+
+        }
+
+        function initChartPress(dados) {
+            
+            const timestamp = new Date().getTime();
+
+            presenca.push({ x: timestamp, y: dados});
+
+            if (presenca.length > 60) presenca.shift();
+
+
+            var options = {
+                series: [{
+                    name:'Presença',
+                    data: [...presenca]
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    zoom: { enabled: true }
+                },
+                colors:['#A020F0'],
+                stroke: {
+                    curve: 'stepline',
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Monitoramento de Presença',
+                    align: 'left'
+                },
+                markers: {
+                    hover: {
+                        sizeOffset: 4
+                    }
+                },
+                xaxis: {
+                    type: 'datetime',
+                },
+                yaxis: { max: 1 },
+                
+                
+            };
+
+            if (!chartPresenca) {
+                chartPresenca = new ApexCharts(document.querySelector("#chartPresenca"), options);
+                chartPresenca.render();
+            } else {
+                chartPresenca.updateSeries([
+                    { name: 'Presença', data: [...presenca] },
+                ]);
+            }
+        }
+
+
+        const statusElement = document.getElementById('status');
+        let isConnected = false;
+
+        const apiEndpoint = 'http://localhost:5000/dados';
+
+        async function fetchData() {
+            try {
+                const response = await axios.get(apiEndpoint);
+
+                if (!isConnected) {
+                    statusElement.classList.replace('disconnected', 'connected');
+                    statusElement.textContent = 'Conectado';
+                    isConnected = true;
+                }
+
+                const newData = response.data;
+                
+                initChart(newData)
+                initChartPress(response.data.presenca)
+                updateDashboard(newData);
+
+            } catch (error) {
+                statusElement.classList.replace('connected', 'disconnected');
+                statusElement.textContent = 'Erro de Conexão';
+                isConnected = false;
+            }
+        }
+
+        function updateDashboard(data) {
+            document.getElementById('temperatura').textContent = data.temperatura.toFixed(2);
+            document.getElementById('umidade').textContent = data.umidade.toFixed(2);
+            document.getElementById('tensao').textContent = data.tensao.toFixed(2);
+            document.getElementById('presenca').textContent = data.presenca ? 'Ativo' : 'Inativo';
+        }
+
+        setInterval(fetchData, 1000);
+        fetchData();
+
+        window.addEventListener('resize', () => {
+            chart.updateOptions({
+                chart: {
+                    width: document.querySelector('.chart-container').offsetWidth
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

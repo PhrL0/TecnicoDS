@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: ./back-end
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  frontend:
+    build: ./front-end
+    ports:
+      - "8080:80"
+    restart: unless-stopped
